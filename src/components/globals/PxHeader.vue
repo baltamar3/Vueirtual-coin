@@ -1,10 +1,8 @@
 <template>
-  <header>
-    <nav class="ui block header olive">
+  <v-app-bar app color="success" dark>
       <px-icon />
-      <span>Vueirtual-Coin</span>
-    </nav>
-  </header>
+      <span><strong>Vue</strong>irtual-Coin</span>
+  </v-app-bar>
 </template>
 
 <script>
@@ -22,8 +20,5 @@ span {
   font-size: 24px;
   margin-top: 0px;
   margin-left: 10px;
-}
-nav {
-   background-color: #869D05;
 }
 </style>
