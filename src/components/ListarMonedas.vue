@@ -14,12 +14,12 @@ export default {
         text: "Ranking",
         align: "start",
         sortable: false,
-        value: "name"
+        value: "rank"
       },
-      {text: "Nombre", value: ""},
-      {text: "Precio", value: ""},
-      {text: "Cap. de Mercado", value: ""},
-      {text: "Variación 24hs", value: ""},
+      {text: "Nombre", value: "name"},
+      {text: "Precio", value: "priceUsd"},
+      {text: "Cap. de Mercado", value: "marketCapUsd"},
+      {text: "Variación 24hs", value: "volumeUsd24Hr"},
     ]
   })
 };

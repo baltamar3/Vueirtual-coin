@@ -9,13 +9,11 @@
 </template>
 
 <script>
-// import PxHeader from "./globals/PxHeader.vue"
 import ListarMonedas from "../components/ListarMonedas.vue";
 export default {
   name: "Home",
 
   components: {
-    // PxHeader,
     ListarMonedas
   },
 
@@ -23,6 +21,16 @@ export default {
     monedas: []
   }),
 
-  created() {}
+  methods:{
+    getModedas(){
+      fetch("https://api.coincap.io/v2/assets")
+      .then((res)=>res.json())
+      .then((data)=>this.monedas=data.data)
+    }
+  },
+
+  created() {
+    this.getModedas()
+  }
 };
 </script>

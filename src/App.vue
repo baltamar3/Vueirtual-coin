@@ -16,11 +16,6 @@ export default {
   components: {
     PxHeader
   },
-
-  data: () => ({
-    monedas: []
-  }),
-
-  created() {}
+  
 };
 </script>
