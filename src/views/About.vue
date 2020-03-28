@@ -3,7 +3,7 @@
     <h1>Vueirtual Coin v1.0.0</h1>
     <p>Es un Proyecto para obtener las cotizaciones de las cryptomonedas mas importantes a traves de la API REST de Coincap.</p>
     <p>Este proyecto se creó con Vuejs y Vuetify.</p>
-    <router-link to="/">Volver a la pagina de Inicio</router-link>
+    <router-link id="link" to="/">Volver a la pagina de Inicio</router-link>
   </v-container>
 </template>
 
@@ -20,6 +20,10 @@ h1{
 
 p {
   color: #878F9F;
+}
+
+#link{
+  color: #4CAF50;
 }
 
 </style>

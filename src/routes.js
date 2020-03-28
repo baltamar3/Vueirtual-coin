@@ -3,6 +3,7 @@ import Router from "vue-router"
 
 import Home from "./views/Home.vue"
 import About from "./views/About.vue"
+import Error from "./views/Error.vue"
 
 Vue.use(Router)
 
@@ -18,6 +19,11 @@ export default new Router({
             path: "/about",
             name: "about",
             component: About
+        },
+        {
+            path: "/*",
+            name: "error",
+            component: Error
         }
     ]
 })
