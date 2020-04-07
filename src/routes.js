@@ -4,7 +4,7 @@ import Router from "vue-router"
 import Home from "./views/Home.vue"
 import About from "./views/About.vue"
 import Error from "./views/Error.vue"
-import CoinDetail from "./views/CoinDetail.vue"
+import MonedaDetalle from "./views/MonedaDetalle.vue"
 
 Vue.use(Router)
 
@@ -24,7 +24,7 @@ export default new Router({
         {
             path: "/coin/:id",
             name: "coin-detail",
-            component: CoinDetail
+            component: MonedaDetalle
         },
         {
             path: "/*",

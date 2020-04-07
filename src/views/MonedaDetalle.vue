@@ -14,30 +14,30 @@
           </h1>
         </div>
         <div>
-          <ul>
+          <ul v-if="historial.length>0">
             <li>
-              <b>Rankink</b>
+              <b>Rankink </b>
               <span>{{moneda.rank}}</span>
             </li>
             <li>
-              <b>Precio Actual</b>
-              <span>{{moneda.priceUsd}}</span>
+              <b>Precio Actual </b>
+              <span>{{moneda.priceUsd | dollar}}</span>
             </li>
             <li>
-              <b>Precio más bajo</b>
-              <span>{{moneda.rank}}</span>
+              <b>Precio más bajo </b>
+              <span>{{min | dollar}}</span>
             </li>
             <li>
-              <b>Precio más alto</b>
-              <span>{{moneda.rank}}</span>
+              <b>Precio más alto </b>
+              <span>{{max | dollar}}</span>
             </li>
             <li>
-              <b>Precio Promedio</b>
-              <span>{{moneda.rank}}</span>
+              <b>Precio Promedio </b>
+              <span>{{avg | dollar}}</span>
             </li>
             <li>
-              <b>Variación 24hs</b>
-              <span>{{moneda.changePercent24Hr}}</span>
+              <b>Variación 24hs </b>
+              <span>{{moneda.changePercent24Hr | percent}}</span>
             </li>
           </ul>
         </div>
@@ -48,10 +48,10 @@
 
 <script>
 export default {
-  name: "CoinDetail",
+  name: "MonedaDetalle",
   data: () => ({
     moneda:{},
-    historial:{}
+    historial:[]
   }),
 
   methods: {
@@ -72,9 +72,21 @@ export default {
   },
 
   computed: {
-    // min() {},
-    // max() {},
-    // avg() {}
+    min() {
+      return Math.min(
+        ...this.historial.map(i => parseFloat(i.priceUsd).toFixed(2))
+      )
+    },
+    max() {
+      return Math.max(
+        ...this.historial.map(i => parseFloat(i.priceUsd).toFixed(2))
+      )
+    },
+    avg() {
+      return Math.abs(
+        ...this.historial.map(i => parseFloat(i.priceUsd).toFixed(2))
+      )
+    }
   },
 
   created() {
@@ -85,5 +97,6 @@ export default {
 </script>
 
 <style scoped>
+
 
 </style>
