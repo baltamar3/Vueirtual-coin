@@ -9,7 +9,10 @@
       loading-text="Loading... Please wait"
     >
       <template v-slot:item.name="{ item }">
-        <router-link id="link" :to="{name: 'coin-detail', params:{id: item.id}}">{{item.name}}</router-link>
+        <router-link id="link" :to="{name: 'coin-detail', params:{id: item.id}}">
+          {{item.name}}
+          <span>{{item.symbol}}</span>
+        </router-link>
       </template>
       <template v-slot:item.symbol="{ item }">
         <img
@@ -61,9 +64,9 @@ export default {
     ]
   }),
 
-  methods:{
-    getMoneda(id){
-      this.$router.push({name:"coin-detail", params:{id}})
+  methods: {
+    getMoneda(id) {
+      this.$router.push({ name: "coin-detail", params: { id } });
     }
   }
 };
@@ -76,5 +79,8 @@ img {
 }
 #link {
   color: #4caf50;
+}
+#link span {
+  color: #C7D0D8;
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <bounce-loader class="center-loader" :loading="isLoading" :color="'#68d391'" :size="100" />
     <v-row class="mt" v-if="moneda.id">
       <v-col cols="4">
         <div>
@@ -60,7 +61,8 @@ export default {
   name: "MonedaDetalle",
   data: () => ({
     moneda: {},
-    historial: []
+    historial: [],
+    isLoading: true
   }),
 
   methods: {
@@ -78,7 +80,10 @@ export default {
         `https://api.coincap.io/v2/assets/${this.$route.params.id}/history?interval=h1&start=${start}&end=${end}`
       )
         .then(res => res.json())
-        .then(data => (this.historial = data.data));
+        .then(data => {
+          this.historial = data.data;
+          this.isLoading = false;
+        });
     }
   },
 
@@ -110,6 +115,14 @@ export default {
 <style scoped>
 .center {
   margin: auto;
+}
+
+.center-loader {
+  margin: auto;
+  position: absolute;
+  height: 100px;
+  top: 50%;
+  left: 45%;
 }
 
 .text-center {
