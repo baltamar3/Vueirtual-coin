@@ -1,58 +1,67 @@
 <template>
   <v-container>
     <bounce-loader class="center-loader" :loading="isLoading" :color="'#68d391'" :size="100" />
-    <v-row class="mt" v-if="moneda.id">
-      <v-col cols="4">
-        <div>
-          <v-img
-            class="center"
-            :src="`https://static.coincap.io/assets/icons/${moneda.symbol.toLowerCase()}@2x.png`"
-            :alt="moneda.name"
-            width="100"
-          />
-          <h1 class="text-center">
-            {{moneda.name}}
-            <small>{{moneda.symbol}}</small>
-          </h1>
-        </div>
-      </v-col>
-      <v-col cols="4">
-        <div>
-          <ul v-if="historial.length>0">
-            <li>
-              <b>Rankink</b>
-              <span>{{moneda.rank}}</span>
-            </li>
-            <li>
-              <b>Precio Actual</b>
-              <span>{{moneda.priceUsd | dollar}}</span>
-            </li>
-            <li>
-              <b>Precio más bajo</b>
-              <span>{{min | dollar}}</span>
-            </li>
-            <li>
-              <b>Precio más alto</b>
-              <span>{{max | dollar}}</span>
-            </li>
-            <li>
-              <b>Precio Promedio</b>
-              <span>{{avg | dollar}}</span>
-            </li>
-            <li>
-              <b>Variación 24hs</b>
-              <span>{{moneda.changePercent24Hr | percent}}</span>
-            </li>
-          </ul>
-        </div>
-      </v-col>
-      <v-col cols="4">
-        <div>
-          <v-btn block tile outlined color="success">USD to BTC</v-btn>
-          <v-text-field />
-        </div>
-      </v-col>
-    </v-row>
+    <div v-if="moneda.id">
+      <v-row class="mt">
+        <v-col :cols="12" :lg="4" :md="4" :sm="4">
+          <div>
+            <v-img
+              class="center"
+              :src="`https://static.coincap.io/assets/icons/${moneda.symbol.toLowerCase()}@2x.png`"
+              :alt="moneda.name"
+              width="100"
+            />
+            <h1 class="text-center">
+              {{moneda.name}}
+              <small>{{moneda.symbol}}</small>
+            </h1>
+          </div>
+        </v-col>
+        <v-col :cols="12" :lg="4" :md="4" :sm="4">
+          <div>
+            <ul v-if="historial.length>0">
+              <li>
+                <b>Rankink</b>
+                <span>{{moneda.rank}}</span>
+              </li>
+              <li>
+                <b>Precio Actual</b>
+                <span>{{moneda.priceUsd | dollar}}</span>
+              </li>
+              <li>
+                <b>Precio más bajo</b>
+                <span>{{min | dollar}}</span>
+              </li>
+              <li>
+                <b>Precio más alto</b>
+                <span>{{max | dollar}}</span>
+              </li>
+              <li>
+                <b>Precio Promedio</b>
+                <span>{{avg | dollar}}</span>
+              </li>
+              <li>
+                <b>Variación 24hs</b>
+                <span>{{moneda.changePercent24Hr | percent}}</span>
+              </li>
+            </ul>
+          </div>
+        </v-col>
+        <v-col :cols="12" :lg="4" :md="4" :sm="4">
+          <div>
+            <v-btn block tile outlined color="success">USD to BTC</v-btn>
+            <v-text-field />
+          </div>
+        </v-col>
+      </v-row>
+      <line-chart
+        v-if="historial.length>0"
+        :colors="['orange']"
+        :min="min"
+        :max="max"
+        :data="historial.map(i =>[i.date, parseFloat(i.priceUsd).toFixed(2)])"
+      />
+    </div>
   </v-container>
 </template>
 
