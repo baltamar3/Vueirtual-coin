@@ -21,27 +21,27 @@
           <div>
             <ul v-if="historial.length>0">
               <li>
-                <b>Rankink</b>
+                <b>Rankink </b>
                 <span>{{moneda.rank}}</span>
               </li>
               <li>
-                <b>Precio Actual</b>
+                <b>Precio Actual </b>
                 <span>{{moneda.priceUsd | dollar}}</span>
               </li>
               <li>
-                <b>Precio más bajo</b>
+                <b>Precio más bajo </b>
                 <span>{{min | dollar}}</span>
               </li>
               <li>
-                <b>Precio más alto</b>
+                <b>Precio más alto </b>
                 <span>{{max | dollar}}</span>
               </li>
               <li>
-                <b>Precio Promedio</b>
+                <b>Precio Promedio </b>
                 <span>{{avg | dollar}}</span>
               </li>
               <li>
-                <b>Variación 24hs</b>
+                <b>Variación 24hs </b>
                 <span>{{moneda.changePercent24Hr | percent}}</span>
               </li>
             </ul>
@@ -50,10 +50,12 @@
         <v-col :cols="12" :lg="4" :md="4" :sm="4">
           <div>
             <v-btn block tile outlined color="success">USD to BTC</v-btn>
-            <v-text-field />
+            <v-text-field color="green" placeholder="Ingrese Cantidad a convertir" autofocus/>
           </div>
         </v-col>
       </v-row>
+
+      <h3>Historial de Precios</h3>
       <line-chart
         v-if="historial.length>0"
         :colors="['orange']"
@@ -61,6 +63,16 @@
         :max="max"
         :data="historial.map(i =>[i.date, parseFloat(i.priceUsd).toFixed(2)])"
       />
+
+      <h3>Mejores ofertas de cambio</h3>
+      <v-data-table :headers="headers" :items="mercado" item-key="monedas" class="elevation-1">
+        <template v-slot:item.priceUsd="{ item }">
+          <span>{{item.priceUsd | dollar}}</span>
+        </template>
+        <template v-slot:item.baseSymbol="{ item }">
+          <span>{{item.baseSymbol}}/{{item.quoteSymbol}}</span>
+        </template>
+      </v-data-table>
     </div>
   </v-container>
 </template>
@@ -68,10 +80,18 @@
 <script>
 export default {
   name: "MonedaDetalle",
+
   data: () => ({
     moneda: {},
     historial: [],
-    isLoading: true
+    mercado: [],
+    intercambios: {},
+    isLoading: true,
+    headers: [
+      { text: "Símbolo", value: "exchangeId" },
+      { text: "Precio", value: "priceUsd" },
+      { text: "Cambio", value: "baseSymbol" },
+    ]
   }),
 
   methods: {
@@ -93,7 +113,14 @@ export default {
           this.historial = data.data;
           this.isLoading = false;
         });
-    }
+    },
+    getMercados() {
+      fetch(
+        `https://api.coincap.io/v2/assets/${this.$route.params.id}/markets?limit=5`
+      )
+        .then(res => res.json())
+        .then(data => (this.mercado = data.data));
+    },
   },
 
   computed: {
@@ -117,6 +144,7 @@ export default {
   created() {
     this.getModeda();
     this.getHistorialMoneda();
+    this.getMercados();
   }
 };
 </script>
@@ -144,5 +172,13 @@ export default {
 
 .form-control {
   display: inline-block;
+}
+
+ul{
+  list-style: none;
+}
+
+h3{
+  color: #4caf50;
 }
 </style>
