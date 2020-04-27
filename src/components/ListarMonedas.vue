@@ -1,5 +1,13 @@
 <template>
   <div>
+    <v-text-field
+      v-model="search"
+      append-icon="mdi-magnify"
+      label="Search"
+      single-line
+      hide-detailss
+      color="success"
+    ></v-text-field>
     <v-data-table
       :headers="headers"
       :items="monedas"
@@ -61,7 +69,8 @@ export default {
       { text: "Cap. de Mercado", value: "marketCapUsd" },
       { text: "Variación 24hs", value: "volumeUsd24Hr" },
       { text: "Detalle", value: "ver" }
-    ]
+    ],
+    search: ""
   }),
 
   methods: {
@@ -81,6 +90,6 @@ img {
   color: #4caf50;
 }
 #link span {
-  color: #C7D0D8;
+  color: #c7d0d8;
 }
 </style>
