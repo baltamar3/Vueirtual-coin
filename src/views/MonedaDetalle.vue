@@ -19,43 +19,70 @@
         </v-col>
         <v-col :cols="12" :lg="4" :md="4" :sm="4">
           <div>
-            <ul v-if="historial.length>0">
-              <li>
-                <b>Rankink </b>
-                <span>{{moneda.rank}}</span>
-              </li>
-              <li>
-                <b>Precio Actual </b>
-                <span>{{moneda.priceUsd | dollar}}</span>
-              </li>
-              <li>
-                <b>Precio más bajo </b>
-                <span>{{min | dollar}}</span>
-              </li>
-              <li>
-                <b>Precio más alto </b>
-                <span>{{max | dollar}}</span>
-              </li>
-              <li>
-                <b>Precio Promedio </b>
-                <span>{{avg | dollar}}</span>
-              </li>
-              <li>
-                <b>Variación 24hs </b>
-                <span>{{moneda.changePercent24Hr | percent}}</span>
-              </li>
-            </ul>
+            <table v-if="historial.length>0" class="center">
+              <tbody>
+                <tr>
+                  <td>
+                    <b>Rankink</b>
+                  </td>
+                  <td>
+                    <span>{{moneda.rank}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Precio Actual</b>
+                  </td>
+                  <td>
+                    <span>{{moneda.priceUsd | dollar}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Precio más bajo</b>
+                  </td>
+                  <td>
+                    <span>{{min | dollar}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Precio más alto</b>
+                  </td>
+                  <td>
+                    <span>{{max | dollar}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Precio Promedio</b>
+                  </td>
+                  <td>
+                    <span>{{avg | dollar}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Variación 24hs</b>
+                  </td>
+                  <td>
+                    <span>{{moneda.changePercent24Hr | percent}}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </v-col>
         <v-col :cols="12" :lg="4" :md="4" :sm="4">
           <div>
-            <v-btn block tile outlined color="success">USD to BTC</v-btn>
-            <v-text-field color="green" placeholder="Ingrese Cantidad a convertir" autofocus/>
+            <v-btn @click="toggleConverter" block tile outlined color="success">{{textBtnConverter}}</v-btn>
+            <v-text-field v-model="convertValue" color="green" text="green" placeholder="Ingrese Cantidad a convertir" autofocus />
+            <span class="olive">{{convertResult}}</span>
           </div>
         </v-col>
       </v-row>
 
-      <h3>Historial de Precios</h3>
+      <h3 class="olive">Historial de Precios</h3>
       <line-chart
         v-if="historial.length>0"
         :colors="['orange']"
@@ -64,7 +91,7 @@
         :data="historial.map(i =>[i.date, parseFloat(i.priceUsd).toFixed(2)])"
       />
 
-      <h3>Mejores ofertas de cambio</h3>
+      <h3 class="olive">Mejores ofertas de cambio</h3>
       <v-data-table :headers="headers" :items="mercado" item-key="monedas" class="elevation-1">
         <template v-slot:item.priceUsd="{ item }">
           <span>{{item.priceUsd | dollar}}</span>
@@ -87,10 +114,13 @@ export default {
     mercado: [],
     intercambios: {},
     isLoading: true,
+    fromUsd: true,
+    convertValue: null,
+    textBtnConverter: "usd to coin",
     headers: [
       { text: "Símbolo", value: "exchangeId" },
       { text: "Precio", value: "priceUsd" },
-      { text: "Cambio", value: "baseSymbol" },
+      { text: "Cambio", value: "baseSymbol" }
     ]
   }),
 
@@ -121,9 +151,22 @@ export default {
         .then(res => res.json())
         .then(data => (this.mercado = data.data));
     },
+    toggleConverter() {
+      this.fromUsd = !this.fromUsd
+      this.textBtnConverter = this.fromUsd ? "usd to coin":"coin to usd"
+    }
   },
 
   computed: {
+    convertResult() {
+      if (!this.convertValue) {
+        return 0;
+      }
+      let result = this.fromUsd
+        ? this.convertValue / this.moneda.priceUsd
+        : this.convertValue * this.moneda.priceUsd;
+      return result.toFixed(4)
+    },
     min() {
       return Math.min(
         ...this.historial.map(i => parseFloat(i.priceUsd).toFixed(2))
@@ -174,11 +217,7 @@ export default {
   display: inline-block;
 }
 
-ul{
-  list-style: none;
-}
-
-h3{
+.olive {
   color: #4caf50;
 }
 </style>
